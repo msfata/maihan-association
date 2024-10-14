@@ -1,12 +1,158 @@
-<!DOCTYPE html>
-<html>
-<header>
-<h1>Header</h1>
-</header>
-
+<!DOCTYPE html>file:///E:/list.html  
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLS Player - Login Required</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #loginForm {
+            display: none;
+            flex-direction: column;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        #loginForm input {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        #loginForm button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #555;
+            color: white;
+            cursor: pointer;
+        }
+        #playerContainer {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        video {
+            width: 80%;
+            height: 70%;
+            background-color: black;
+            margin-bottom: 10px;
+        }
+        #channelIcons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .channel-icon {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
 <body>
-<h2>This is H2 Body</h2>
-<button onclick="display();">Display</button>
-<script>function display(){alert("Alert ")}</script>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+        <h2 style="color: white;">Login</h2>
+        <input type="text" id="username" placeholder="Username" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button id="loginButton">Login</button>
+    </div>
+
+    <!-- Video Player Container -->
+    <div id="playerContainer">
+        <video id="videoPlayer" controls></video>
+        <div id="channelIcons"></div>
+    </div>
+
+    <!-- Include hls.js library from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <script type="text/javascript">
+        const loginForm = document.getElementById('loginForm');
+        const playerContainer = document.getElementById('playerContainer');
+        const loginButton = document.getElementById('loginButton');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const video = document.getElementById('videoPlayer');
+        const channelIcons = document.getElementById('channelIcons');
+
+        // Hardcoded credentials (for demo purposes)
+        const validUsername = "admin";
+        const validPassword = "pass";
+
+        // List of video URLs and their corresponding icons
+        const channels = [
+            { url: 'https://dai.google.com/linear/hls/event/yvQpXDAeRMGU25KTu--V6Q/master.m3u8', icon: 'https://via.placeholder.com/50/ff0000?text=1' },
+            { url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-classic/manifest.m3u8', icon: 'https://via.placeholder.com/50/00ff00?text=2' },
+            { url: 'https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Andpictureshd1/default/Andpictureshd1.m3u8', icon: 'https://via.placeholder.com/50/0000ff?text=3' },
+            { url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-hd/manifest.m3u8', icon: 'https://via.placeholder.com/50/ffff00?text=4' },
+            { url: 'https://cc-jytb1qhmgqh5a.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-jytb1qhmgqh5a/playlist.m3u8', icon: 'https://via.placeholder.com/50/ff00ff?text=5' }
+        ];
+
+        // Populate the channel icons dynamically
+        channels.forEach((channel, index) => {
+            const img = document.createElement('img');
+            img.src = channel.icon;
+            img.classList.add('channel-icon');
+            img.title = `Channel ${index + 1}`;
+            img.addEventListener('click', () => loadVideo(channel.url));
+            channelIcons.appendChild(img);
+        });
+
+        // Function to load and play the selected video
+        function loadVideo(url) {
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play();  // Automatically play the video
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play();  // Automatically play the video
+                });
+            } else {
+                console.error('Your browser does not support HLS.');
+            }
+        }
+
+        // Handle Login
+        loginButton.addEventListener('click', function () {
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            if (username === validUsername && password === validPassword) {
+                // Successful login: show the player and load the first video
+                loginForm.style.display = 'none';
+                playerContainer.style.display = 'flex';
+                loadVideo(channels[0].url);  // Auto-play the first video
+            } else {
+                alert('Invalid username or password. Please try again.');
+            }
+        });
+
+        // Show the login form on page load
+        window.onload = function() {
+            loginForm.style.display = 'flex';
+        };
+    </script>
+
 </body>
 </html>
