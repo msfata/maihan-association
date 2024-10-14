@@ -68,7 +68,6 @@
 </head>
 <body>
 
-    <!-- Login Form -->
     <div id="loginForm">
         <h2 style="color: white;">Login</h2>
         <input type="text" id="username" placeholder="Username" required />
@@ -76,13 +75,11 @@
         <button id="loginButton">Login</button>
     </div>
 
-    <!-- Video Player Container -->
     <div id="playerContainer">
         <video id="videoPlayer" controls></video>
         <div id="channelIcons"></div>
     </div>
 
-    <!-- Include hls.js library from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
     <script type="text/javascript">
@@ -94,11 +91,9 @@
         const video = document.getElementById('videoPlayer');
         const channelIcons = document.getElementById('channelIcons');
 
-        // Hardcoded credentials (for demo purposes)
         const validUsername = "admin";
         const validPassword = "pass";
 
-        // List of video URLs and their corresponding icons
         const channels = [
             { url: 'https://dai.google.com/linear/hls/event/yvQpXDAeRMGU25KTu--V6Q/master.m3u8', icon: 'https://via.placeholder.com/50/ff0000?text=1' },
             { url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-classic/manifest.m3u8', icon: 'https://via.placeholder.com/50/00ff00?text=2' },
@@ -109,18 +104,16 @@
 
         let currentChannelIndex = 0;
 
-        // Populate the channel icons dynamically
         channels.forEach((channel, index) => {
             const img = document.createElement('img');
             img.src = channel.icon;
             img.classList.add('channel-icon');
             img.title = `Channel ${index + 1}`;
-            if (index === 0) img.classList.add('selected'); // Highlight the first channel
+            if (index === 0) img.classList.add('selected');
             img.addEventListener('click', () => loadChannel(index));
             channelIcons.appendChild(img);
         });
 
-        // Function to load and play the selected video
         function loadChannel(index) {
             currentChannelIndex = index;
             highlightSelectedChannel();
@@ -140,8 +133,6 @@
                 video.addEventListener('loadedmetadata', () => {
                     video.play();
                 });
-            } else {
-                console.error('Your browser does not support HLS.');
             }
         }
 
@@ -152,25 +143,23 @@
             });
         }
 
-        // Handle remote control key events
-        window.addEventListener('keydown', (event) => {
-            switch (event.key) {
-                case 'ArrowRight':
-                    currentChannelIndex = (currentChannelIndex + 1) % channels.length;
-                    highlightSelectedChannel();
-                    break;
-                case 'ArrowLeft':
+        // Handle remote control key events for Tizen
+        document.addEventListener('keydown', (event) => {
+            switch (event.keyCode) {
+                case 37: // Left arrow
                     currentChannelIndex = (currentChannelIndex - 1 + channels.length) % channels.length;
                     highlightSelectedChannel();
                     break;
-                case 'Enter':
-                case 'OK':  // Some remotes use 'OK'
+                case 39: // Right arrow
+                    currentChannelIndex = (currentChannelIndex + 1) % channels.length;
+                    highlightSelectedChannel();
+                    break;
+                case 13: // Enter/OK button
                     loadChannel(currentChannelIndex);
                     break;
             }
         });
 
-        // Handle Login
         loginButton.addEventListener('click', function () {
             const username = usernameInput.value;
             const password = passwordInput.value;
@@ -178,9 +167,9 @@
             if (username === validUsername && password === validPassword) {
                 loginForm.style.display = 'none';
                 playerContainer.style.display = 'flex';
-                loadChannel(0); // Auto-play the first video
+                loadChannel(0);
             } else {
-                alert('Invalid username or password. Please try again.');
+                alert('Invalid username or password.');
             }
         });
 
