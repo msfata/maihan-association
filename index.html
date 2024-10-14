@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HLS Player - Login Required</title>
+    <title>Jasmine - Login Required</title>
     <style>
         body {
             margin: 0;
@@ -95,9 +95,6 @@
         const validUsername = "admin";
         const validPassword = "pass";
 
-        // Your TV's MAC address
-        const myMacAddress = "00:c3:f4:e4:54:38";
-
         // List of video URLs and their corresponding icons
         const channels = [
             { url: 'https://dai.google.com/linear/hls/event/yvQpXDAeRMGU25KTu--V6Q/master.m3u8', icon: 'https://via.placeholder.com/50/ff0000?text=1' },
@@ -124,33 +121,17 @@
                 hls.loadSource(url);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play();  // Automatically play the video
+                    video.play();
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
                 video.addEventListener('loadedmetadata', () => {
-                    video.play();  // Automatically play the video
+                    video.play();
                 });
             } else {
                 console.error('Your browser does not support HLS.');
             }
         }
-
-        // Check for MAC address (simulation, replace with actual check if possible)
-        const checkMacAddress = () => {
-            // In a real-world scenario, you'd check the actual MAC address of the device
-            const currentMacAddress = myMacAddress; // Simulated MAC address check
-
-            if (currentMacAddress === myMacAddress) {
-                // Skip login and show player directly
-                loginForm.style.display = 'none';
-                playerContainer.style.display = 'flex';
-                loadVideo(channels[0].url);  // Auto-play the first video
-            } else {
-                // Show the login form if MAC address does not match
-                loginForm.style.display = 'flex';
-            }
-        };
 
         // Handle Login
         loginButton.addEventListener('click', function () {
@@ -158,17 +139,29 @@
             const password = passwordInput.value;
 
             if (username === validUsername && password === validPassword) {
-                // Successful login: show the player and load the first video
                 loginForm.style.display = 'none';
                 playerContainer.style.display = 'flex';
-                loadVideo(channels[0].url);  // Auto-play the first video
+                loadVideo(channels[0].url);
             } else {
                 alert('Invalid username or password. Please try again.');
             }
         });
 
-        // Show the login form or skip based on MAC address on page load
-        window.onload = checkMacAddress;
+        // Show the login form on page load
+        window.onload = function() {
+            loginForm.style.display = 'flex';
+        };
+
+        // Toggle full-screen on double-click
+        playerContainer.addEventListener('dblclick', () => {
+            if (!document.fullscreenElement) {
+                playerContainer.requestFullscreen().catch(err => {
+                    console.error(`Error attempting to enter fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
     </script>
 
 </body>
