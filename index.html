@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jasmine - Login Required</title>
+    <title>HLS Player - Login Required</title>
     <style>
         body {
             margin: 0;
@@ -91,9 +91,14 @@
         const video = document.getElementById('videoPlayer');
         const channelIcons = document.getElementById('channelIcons');
 
+        // Hardcoded credentials (for demo purposes)
         const validUsername = "admin";
         const validPassword = "pass";
 
+        // Your TV's MAC address
+        const myMacAddress = "00:c3:f4:e4:54:38";
+
+        // List of video URLs and their corresponding icons
         const channels = [
             { url: 'https://dai.google.com/linear/hls/event/yvQpXDAeRMGU25KTu--V6Q/master.m3u8', icon: 'https://via.placeholder.com/50/ff0000?text=1' },
             { url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-classic/manifest.m3u8', icon: 'https://via.placeholder.com/50/00ff00?text=2' },
@@ -102,6 +107,7 @@
             { url: 'https://cc-jytb1qhmgqh5a.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-jytb1qhmgqh5a/playlist.m3u8', icon: 'https://via.placeholder.com/50/ff00ff?text=5' }
         ];
 
+        // Populate the channel icons dynamically
         channels.forEach((channel, index) => {
             const img = document.createElement('img');
             img.src = channel.icon;
@@ -111,51 +117,58 @@
             channelIcons.appendChild(img);
         });
 
+        // Function to load and play the selected video
         function loadVideo(url) {
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(url);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play();
+                    video.play();  // Automatically play the video
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
                 video.addEventListener('loadedmetadata', () => {
-                    video.play();
+                    video.play();  // Automatically play the video
                 });
             } else {
                 console.error('Your browser does not support HLS.');
             }
         }
 
-        loginButton.addEventListener('click', login);
+        // Check for MAC address (simulation, replace with actual check if possible)
+        const checkMacAddress = () => {
+            // In a real-world scenario, you'd check the actual MAC address of the device
+            const currentMacAddress = myMacAddress; // Simulated MAC address check
 
-        function login() {
+            if (currentMacAddress === myMacAddress) {
+                // Skip login and show player directly
+                loginForm.style.display = 'none';
+                playerContainer.style.display = 'flex';
+                loadVideo(channels[0].url);  // Auto-play the first video
+            } else {
+                // Show the login form if MAC address does not match
+                loginForm.style.display = 'flex';
+            }
+        };
+
+        // Handle Login
+        loginButton.addEventListener('click', function () {
             const username = usernameInput.value;
             const password = passwordInput.value;
 
             if (username === validUsername && password === validPassword) {
+                // Successful login: show the player and load the first video
                 loginForm.style.display = 'none';
                 playerContainer.style.display = 'flex';
-                loadVideo(channels[0].url);
+                loadVideo(channels[0].url);  // Auto-play the first video
             } else {
                 alert('Invalid username or password. Please try again.');
             }
-        }
-
-        usernameInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') passwordInput.focus();
         });
 
-        passwordInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') login();
-        });
-
-        window.onload = function () {
-            loginForm.style.display = 'flex';
-            usernameInput.focus();
-        };
+        // Show the login form or skip based on MAC address on page load
+        window.onload = checkMacAddress;
     </script>
 
 </body>
