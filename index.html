@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HLS Player - Login Required</title>
+    <title>Jasmine - Login Required</title>
     <style>
         body {
             margin: 0;
@@ -93,6 +93,7 @@
 
         const validUsername = "admin";
         const validPassword = "pass";
+        const allowedIP = "192.168.1.92"; // Your TV's IP address
 
         const channels = [
             { url: 'https://dai.google.com/linear/hls/event/yvQpXDAeRMGU25KTu--V6Q/master.m3u8', icon: 'https://via.placeholder.com/50/ff0000?text=1' },
@@ -129,32 +130,32 @@
             }
         }
 
-        loginButton.addEventListener('click', login);
+        async function getUserIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('Error fetching IP:', error);
+                return null;
+            }
+        }
 
-        function login() {
-            const username = usernameInput.value;
-            const password = passwordInput.value;
+        async function checkDevice() {
+            const userIP = await getUserIP();
+            console.log("User IP:", userIP);
 
-            if (username === validUsername && password === validPassword) {
+            if (userIP === allowedIP) {
                 loginForm.style.display = 'none';
                 playerContainer.style.display = 'flex';
                 loadVideo(channels[0].url);
             } else {
-                alert('Invalid username or password. Please try again.');
+                loginForm.style.display = 'flex';
             }
         }
 
-        usernameInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') passwordInput.focus();
-        });
-
-        passwordInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') login();
-        });
-
         window.onload = function () {
-            loginForm.style.display = 'flex';
-            usernameInput.focus();
+            checkDevice();
         };
     </script>
 
