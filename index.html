@@ -21,16 +21,13 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
-        #loginForm input {
+        #loginForm input, #loginForm button {
             margin-bottom: 10px;
             padding: 10px;
             border: none;
             border-radius: 5px;
         }
         #loginForm button {
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
             background-color: #555;
             color: white;
             cursor: pointer;
@@ -51,10 +48,9 @@
         }
         #channelList {
             display: flex;
-            flex-direction: row; /* Align channels side by side */
+            flex-wrap: wrap;
             justify-content: center;
             gap: 10px;
-            flex-wrap: wrap; /* Allows wrapping to the next line if needed */
         }
         .channel-name {
             color: white;
@@ -87,40 +83,29 @@
         <div id="channelList"></div>
     </div>
 
-    <!-- Include hls.js library from CDN -->
+    <!-- Include hls.js library -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
     <script type="text/javascript">
         const loginForm = document.getElementById('loginForm');
         const playerContainer = document.getElementById('playerContainer');
         const loginButton = document.getElementById('loginButton');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
         const video = document.getElementById('videoPlayer');
         const channelList = document.getElementById('channelList');
 
-        // Hardcoded credentials (for demo purposes)
         const validUsername = "admin";
         const validPassword = "pass";
 
-        // List of video URLs and their corresponding names
-    const channels = [
-    { name: 'Zee Cinema India', url: 'https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Zeecinema1/default/Zeecinema1.m3u8' },
-    { name: 'Bollywood Prime', url: 'https://dai.google.com/linear/hls/event/yvQpXDAeRMGU25KTu--V6Q/master.m3u8' },
-    { name: 'Bollywood Classic', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-classic/manifest.m3u8' },
-    { name: 'Bollywood', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-hd/manifest.m3u8' },
-    { name: 'Movie Club', url: 'https://cc-jytb1qhmgqh5a.akamaized.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-jytb1qhmgqh5a/playlist.m3u8' },
-    { name: 'Sony Max 2', url: 'http://103.49.69.156:8000/play/a02f/index.m3u8' },
-    { name: 'ZEE Bollywood', url: 'http://212.102.34.8:9080/ZeeBollywood/video.m3u8' },
-    { name: 'B4U Movies', url: 'http://cdn2.pishow.tv/live/156/master.m3u8' },
-    { name: 'B4U Kadak', url: 'http://cdn2.pishow.tv/live/160/master.m3u8' },
-    { name: 'Bollywood Shemaroo', url: 'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg00864-shemarooenterta-shemabollywood-ono/playlist.m3u8' },
+        const macAddress = "00:c3:f4:e4:54:38"; // Your TV's MAC address
 
-];
+        const channels = [
+            { name: 'Zee Cinema India', url: 'https://d1g8wgjurz8via.cloudfront.net/bpk-tv/Zeecinema1/default/Zeecinema1.m3u8' },
+            { name: 'Bollywood Prime', url: 'https://dai.google.com/linear/hls/event/yvQpXDAeRMGU25KTu--V6Q/master.m3u8' },
+            { name: 'Bollywood Classic', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-classic/manifest.m3u8' }
+        ];
 
-
-        // Populate the channel names dynamically
-        channels.forEach((channel) => {
+        // Populate the channel list
+        channels.forEach(channel => {
             const channelElement = document.createElement('div');
             channelElement.textContent = channel.name;
             channelElement.classList.add('channel-name');
@@ -128,50 +113,52 @@
             channelList.appendChild(channelElement);
         });
 
-        // Function to load and play the selected video
         function loadVideo(url) {
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(url);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play();
-                });
+                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
-                video.addEventListener('loadedmetadata', () => {
-                    video.play();
-                });
+                video.addEventListener('loadedmetadata', () => video.play());
             } else {
                 console.error('Your browser does not support HLS.');
             }
         }
 
-        // Handle Login
-        loginButton.addEventListener('click', function () {
-            const username = usernameInput.value;
-            const password = passwordInput.value;
+        loginButton.addEventListener('click', () => {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
             if (username === validUsername && password === validPassword) {
-                loginForm.style.display = 'none';
-                playerContainer.style.display = 'flex';
-                loadVideo(channels[0].url);  // Auto-play the first video
+                localStorage.setItem('authenticated', 'true');
+                showPlayer();
             } else {
-                alert('Invalid username or password. Please try again.');
+                alert('Invalid username or password.');
             }
         });
 
-        // Show the login form on page load
-        window.onload = function() {
-            loginForm.style.display = 'flex';
+        function showPlayer() {
+            loginForm.style.display = 'none';
+            playerContainer.style.display = 'flex';
+            loadVideo(channels[0].url); // Auto-play first channel
+        }
+
+        window.onload = () => {
+            const isAuthenticated = localStorage.getItem('authenticated');
+            const deviceMAC = "00:c3:f4:e4:54:38"; // Simulate TV MAC
+
+            if (deviceMAC === macAddress || isAuthenticated) {
+                showPlayer();
+            } else {
+                loginForm.style.display = 'flex';
+            }
         };
 
-        // Toggle full-screen on double-click
         playerContainer.addEventListener('dblclick', () => {
             if (!document.fullscreenElement) {
-                playerContainer.requestFullscreen().catch(err => {
-                    console.error(`Error attempting to enter fullscreen: ${err.message}`);
-                });
+                playerContainer.requestFullscreen().catch(err => console.error(err));
             } else {
                 document.exitFullscreen();
             }
