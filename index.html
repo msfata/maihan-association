@@ -111,12 +111,15 @@
 
         const macAddress = "00-FF-33-D7-5A-5D"; // Your TV's MAC address  //00:c3:f4:e4:54:38
 
-    
+
+   
         const channels = [
+			{ name: 'Euro News', url: ' https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/euronews/euronews-en.m3u8' },
+			 { name: 'Aljazira', url: ' https://d1cy85syyhvqz5.cloudfront.net/v1/master/7b67fbda7ab859400a821e9aa0deda20ab7ca3d2/aljazeeraLive/AJE/index.m3u8' },
+			 { name: 'BBC Persian', url: ' https://vs-hls-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/t=3840/v=pv14/b=5070016/main.m3u8' },
                          { name: 'Afghan Nobel', url: ' https://live.relentlessinnovations.net:1936/afghannobeltv/afghannobeltv/playlist.m3u8' },
 			 { name: 'Afghan Nobel Movies', url: 'https://live.relentlessinnovations.net:1936/afghannobel/afghannobel/playlist.m3u8' },
 			 { name: 'Afghan Time', url: ' https://live.relentlessinnovations.net:1936/afghantime/afghantime/playlist.m3u8' },
-		         { name: 'Bahar ', url: 'https://59d39900ebfb8.streamlock.net/bahartv/bahartv/chunklist_w2056151197.m3u8' },
 			 { name: 'Kayhan', url: 'https://playout395.livestreamingcdn.com/live/Stream1/playlist.m3u8' },
 			 { name: 'Asia Music', url: 'https://amchls.wns.live/hls/stream.m3u8' },
 		
@@ -125,26 +128,27 @@
                          { name: 'SL1', url: 'https://slonehls.wns.live/hls/stream.m3u8' },
 		         { name: 'MTC', url: 'https://mtchls.wns.live/hls/stream.m3u8' },
 		         { name: 'RJTV', url: 'https://rjtvhls.wns.live/hls/stream.m3u8' },
-		         { name: 'MBC PERSIA', url: 'https://shls-mbcpersia-prod-dub.shahid.net/out/v1/bdc7cd0d990e4c54808632a52c396946/index.m3u8' },
 		         { name: 'OXR', url: 'https://hls.oxir.live/hls/stream.m3u8' },
 		         { name: 'SL2', url: 'https://sltwohls.wns.live/hls/stream.m3u8' },
 		         { name: 'RJTV', url: 'https://rjtvhls.wns.live/hls/stream.m3u8' },
 		         { name: 'ICC Plus', url: 'https://icchls.wns.live/hls/stream.m3u8' },
 		         { name: 'GRAND', url: 'https://gcinemahls.wns.live/hls/stream.m3u8' },
-		
-		
-		
+
+
+			{ name: 'Zee Cinema', url: 'http://182.176.185.207:7500/play/a07m/index.m3u8' },
+		{ name: 'Star Gold', url: 'http://182.176.185.207:7500/play/a07p/index.m3u8' },
+			 { name: 'Nameless 1', url: 'http://str24.l9574.com/742.stream/index.m3u8' },
+		 { name: 'Nameless 2', url: 'http://str24.l9574.com/743.stream/index.m3u8' },
+		 { name: 'Nameless 3', url: 'http://str24.l9574.com/744.stream/index.m3u8' },
+		 { name: 'Nameless 4', url: 'http://str24.l9574.com/745.stream/index.m3u8' },
+		 { name: 'Nameless 5', url: 'http://str24.l9574.com/746.stream/index.m3u8' },
 		         { name: 'Bollywood HD', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-hd/manifest.m3u8' },
                          { name: 'Bollywood Classic', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-classic/manifest.m3u8' },
-                         { name: 'Arabic Bollywood', url: 'https://shls-mbcbollywood-prod-dub.shahid.net/out/v1/a79c9d7ef2a64a54a64d5c4567b3462a/index.m3u8' },
                          { name: 'Local', url: 'https://dbrb49pjoymg4.cloudfront.net/v1/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/7be04f99-5bf2-430b-86dd-4e1577159f1b/4.m3u8' },
                          { name: 'YRF', url: 'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01412-xiaomiasia-yrfmusic-xiaomi/playlist.m3u8' },
                          { name: 'Joo', url: 'https://livecdn.live247stream.com/joomusic/tv/playlist.m3u8' },
 			 { name: 'Shemaroo Bollywood', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/shemaroo-bollywood/b76c4ad2-cc0a-43e3-888f-f3e322cfa56f/0.m3u8' },
 			 { name: 'Shemaroo', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/shemaroo-filmigaane/c80a70b7-08fa-4f36-8578-88a3da022708/0.m3u8' },
-		{ name: 'IPL', url: 'http://41.205.93.154/STARSPORTS1/index.m3u8' },
-		{ name: 'SPORT', url: 'http://str24.l9574.com/610.stream/index.m3u8'},
-                { name: 'YYZ', url: 'http://cdn12.henico.net:8080/live/sursangam/index.m3u8'}
 		
 		  ];
 
@@ -210,3 +214,4 @@
 
 </body>
 </html>
+
