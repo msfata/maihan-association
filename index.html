@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,26 +53,31 @@
             justify-content: center;
             gap: 10px;
         }
-        .channel-name {
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 12px 20px;
-            width: 160px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid brown;
-            border-radius: 10%;
-            text-align: center;
-            background-color: #222;
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
-        }
+    .channel-name {
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 12px 20px;
+    width: 160px; /* Fixed width */
+    height: 20px; /* Fixed height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid brown;
+    border-radius: 10%;
+    text-align: center;
+    background-color: #222;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+}
+
+.channel-name:hover {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
         .channel-name:hover {
-            background-color: #444;
-            transform: scale(1.05);
+            background-color: #555;
         }
     </style>
 </head>
@@ -104,12 +110,49 @@
         const validUsername = "admin";
         const validPassword = "pass";
 
+        const macAddress = "00-FF-33-D7-5A-5D"; // Your TV's MAC address  //00:c3:f4:e4:54:38
+
+
+   
         const channels = [
-            { name: 'Euro News', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/euronews/euronews-en.m3u8' },
-            { name: 'Zee Tv', url: 'http://182.176.185.207:7500/play/a07i/index.m3u8' },
-            { name: 'ABC Gold', url: 'http://103.156.169.82:8000/ABC.GOLD/index.m3u8' },
-            { name: 'ABC Music', url: 'http://103.156.169.82:8000/ABC.MUSIC/index.m3u8' }
-        ];
+			{ name: 'Euro News', url: ' https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/euronews/euronews-en.m3u8' },
+			 { name: 'Aljazira', url: ' https://d1cy85syyhvqz5.cloudfront.net/v1/master/7b67fbda7ab859400a821e9aa0deda20ab7ca3d2/aljazeeraLive/AJE/index.m3u8' },
+			 { name: 'BBC Persian', url: ' https://vs-hls-pushb-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_persian_tv/t=3840/v=pv14/b=5070016/main.m3u8' },
+                         { name: 'Afghan Nobel', url: ' https://live.relentlessinnovations.net:1936/afghannobeltv/afghannobeltv/playlist.m3u8' },
+			 { name: 'Afghan Nobel Movies', url: 'https://live.relentlessinnovations.net:1936/afghannobel/afghannobel/playlist.m3u8' },
+			 { name: 'Afghan Time', url: ' https://live.relentlessinnovations.net:1936/afghantime/afghantime/playlist.m3u8' },
+			 { name: 'Kayhan', url: 'https://playout395.livestreamingcdn.com/live/Stream1/playlist.m3u8' },
+			 { name: 'Asia Music', url: 'https://amchls.wns.live/hls/stream.m3u8' },
+		
+		         { name: 'Ava Family', url: 'https://familyhls.avatv.live/hls/stream.m3u8' },
+                         { name: 'OXR', url: 'https://hls.oxir.live/hls/stream.m3u8' },
+                         { name: 'SL1', url: 'https://slonehls.wns.live/hls/stream.m3u8' },
+		         { name: 'MTC', url: 'https://mtchls.wns.live/hls/stream.m3u8' },
+		         { name: 'RJTV', url: 'https://rjtvhls.wns.live/hls/stream.m3u8' },
+		         { name: 'OXR', url: 'https://hls.oxir.live/hls/stream.m3u8' },
+		         { name: 'SL2', url: 'https://sltwohls.wns.live/hls/stream.m3u8' },
+		         { name: 'RJTV', url: 'https://rjtvhls.wns.live/hls/stream.m3u8' },
+		         { name: 'ICC Plus', url: 'https://icchls.wns.live/hls/stream.m3u8' },
+		         { name: 'GRAND', url: 'https://gcinemahls.wns.live/hls/stream.m3u8' },
+
+		         { name: 'Bollywood HD', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-hd/manifest.m3u8' },
+                         { name: 'Bollywood Classic', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/bollywood-classic/manifest.m3u8' },
+                         { name: 'Local', url: 'https://dbrb49pjoymg4.cloudfront.net/v1/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-ams-aws/7be04f99-5bf2-430b-86dd-4e1577159f1b/4.m3u8' },
+                         { name: 'YRF', url: 'https://cdn-uw2-prod.tsv2.amagi.tv/linear/amg01412-xiaomiasia-yrfmusic-xiaomi/playlist.m3u8' },
+                         { name: 'Joo', url: 'https://livecdn.live247stream.com/joomusic/tv/playlist.m3u8' },
+			 { name: 'Shemaroo Bollywood', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/shemaroo-bollywood/b76c4ad2-cc0a-43e3-888f-f3e322cfa56f/0.m3u8' },
+			 { name: 'Shemaroo', url: 'https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/shemaroo-filmigaane/c80a70b7-08fa-4f36-8578-88a3da022708/0.m3u8' },
+{ name: 'Goldmines Movies ', url: 'https://cdn-2.pishow.tv/live/1461/master.m3u8' },
+			{ name: 'Goldmines  ', url: 'https://cdn-2.pishow.tv/live/1459/master.m3u8' },
+			{ name: 'Zee Tv ', url: 'http://182.176.185.207:7500/play/a07i/index.m3u8' },
+{ name: 'ABC Gold ', url: 'http://103.156.169.82:8000/ABC.GOLD/index.m3u8' },
+			{ name: 'ABC Music ', url: 'http://103.156.169.82:8000/ABC.MUSIC/index.m3u8' },
+			{ name: 'ABC Action ', url: 'http://103.156.169.82:8000/ABC.ACTION/index.m3u8' },
+			{ name: 'ABC Superstar ', url: 'http://103.156.169.82:8000/ABC.SUPERSTAR/index.m3u8' },
+			
+			
+		  ];
+
 
         // Populate the channel list
         channels.forEach(channel => {
@@ -120,13 +163,7 @@
             channelList.appendChild(channelElement);
         });
 
-        // Updated loadVideo function with proxy for HTTP
         function loadVideo(url) {
-            if (url.startsWith("http://")) {
-                const proxy = "https://cors-proxy.elfsight.com/";
-                url = proxy + url;
-            }
-
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(url);
@@ -155,12 +192,16 @@
         function showPlayer() {
             loginForm.style.display = 'none';
             playerContainer.style.display = 'flex';
-            loadVideo(channels[0].url);
+            loadVideo(channels[0].url); // Auto-play first channel
         }
 
         window.onload = () => {
             const isAuthenticated = localStorage.getItem('authenticated');
-            showPlayer();
+            const deviceMAC = "00-FF-33-D7-5A-5D"; // Simulate TV MAC
+
+           
+                showPlayer();
+          
         };
 
         playerContainer.addEventListener('dblclick', () => {
@@ -174,3 +215,8 @@
 
 </body>
 </html>
+
+
+
+
+
