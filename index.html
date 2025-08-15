@@ -162,19 +162,26 @@
             channelList.appendChild(channelElement);
         });
 
-        function loadVideo(url) {
-            if (Hls.isSupported()) {
-                const hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
-                video.addEventListener('loadedmetadata', () => video.play());
-            } else {
-                console.error('Your browser does not support HLS.');
-            }
-        }
+  function loadVideo(url) {
+    // If the stream is HTTP, send it through the proxy
+    if (url.startsWith("http://")) {
+        const proxy = "https://cors-proxy.elfsight.com/"; 
+        url = proxy + url;
+    }
+
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(url);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = url;
+        video.addEventListener('loadedmetadata', () => video.play());
+    } else {
+        console.error('Your browser does not support HLS.');
+    }
+}
+
 
         loginButton.addEventListener('click', () => {
             const username = document.getElementById('username').value;
